@@ -1,26 +1,18 @@
-MAIN PROC
- MOV CX, 0014H
- MOV AX, 005FH
+G DW ?                    
+ MOV BX, 5H 
+ MOV AX, 0FH
+ GCD_LOOP:
+    CMP AX, BX  ; Compare the two numbers    JE GCD_DONE ; If they are equal, jump to the end
+    JA SUBTRACT ; If AX > BX, subtract BX from AX
+    JB SWAP     ; If AX < BX, swap AX and BX
+SUBTRACT:    SUB AX, BX  ; Subtract BX from AX
+    JMP GCD_LOOP ; Repeat the loop
+SWAP:    XCHG AX, BX  ; Swap the values in AX and BX
+    JMP GCD_LOOP ; Repeat the loop
+GCD_DONE:    ; The GCD
 
- COMP:
- CALL GCD
-
- MOV CX, 0014H
- MOV AX, 005FH
- MOV DX, 0000H
- MUL CX
- DIV BX
-ENDP
+ MOV G,AX MOV BX, 5H
+ MOV AX, 0FH  
+ MUL BX
+ DIV G    
 HLT
-GCD PROC
- LABEL:
- MOV DX, 0000H
- DIV CX
- MOV BX, CX
- MOV AX, CX
- MOV CX, DX
-
- CMP DX, 0000H
- JNZ LABEL
- RET
-ENDP
